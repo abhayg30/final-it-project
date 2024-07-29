@@ -14,6 +14,7 @@ from application.models import MatchedJobs
 from student.resume.models import UploadResume
 from django.conf import settings
 import numpy as np
+
 s3 = boto3.client(
     "s3",
     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -24,8 +25,7 @@ logger = logging.getLogger("django")
 
 
 def matchingProjects(*args, **options):
-    """generating recommendations for each user
-    """
+    """generating recommendations for each user"""
     logger.info("cron2 was called")
     recommendations = defaultdict(list)
     try:
@@ -45,7 +45,8 @@ def matchingProjects(*args, **options):
     except Exception as e:
         logger.error("Error occurred", str(e))
 
-#Util function for bulk insertion
+
+# Util function for bulk insertion
 def bulk_insert_data(data_dict):
     MatchedJobs.objects.all().delete()
     objects_to_insert = [
@@ -54,7 +55,8 @@ def bulk_insert_data(data_dict):
 
     MatchedJobs.objects.bulk_create(objects_to_insert)
 
-#util function to clean resume
+
+# util function to clean resume
 def cleanResume(resumeText):
     resumeText = re.sub("http\S+\s", " ", resumeText)
     resumeText = re.sub("RT|cc", " ", resumeText)
@@ -67,7 +69,8 @@ def cleanResume(resumeText):
     resumeText = re.sub("\s+", " ", resumeText)
     return resumeText
 
-#fucntion to calculate similarity score
+
+# fucntion to calculate similarity score
 def score(text1, text2):
     text1 = cleanResume(text1)
     text2 = cleanResume(text2)
@@ -77,7 +80,8 @@ def score(text1, text2):
     matrixpol2 = vectorizer.transform([text2])
     return cosine_similarity(matrixpol1, matrixpol2)[0][0]
 
-#Get all resumes
+
+# Get all resumes
 def getAllResumes():
     try:
         resumes = UploadResume.objects.all()
@@ -85,7 +89,8 @@ def getAllResumes():
     except:
         pass
 
-#Extract text out of the resume
+
+# Extract text out of the resume
 def getResumeText(resume):
     response = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=str(resume))
     pdf_content = response["Body"].read()
