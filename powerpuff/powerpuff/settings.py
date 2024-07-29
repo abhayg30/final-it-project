@@ -23,7 +23,7 @@ USE_TZ = False
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -61,8 +61,8 @@ INSTALLED_APPS = [
     "storages",
 ]
 
-AWS_ACCESS_KEY_ID = "AKIAZGXVLPEQX2KU37FQ"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "powerpuff420"
 AWS_S3_SIGNATURE_VERSION = "s3v4"
 AWS_S3_REGION_NAME = "ap-southeast-2"
