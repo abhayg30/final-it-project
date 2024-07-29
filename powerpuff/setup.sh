@@ -1,9 +1,6 @@
 #!/bin/bash
 rm -rf db.sqlite3
 rm -rf */migrations
-sleep 2
-pip install -r requirements.txt
-sleep 2
 python3 manage.py makemigrations auths
 python3 manage.py migrate
 sleep 2
